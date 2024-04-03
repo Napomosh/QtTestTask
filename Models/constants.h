@@ -1,0 +1,9 @@
+﻿#ifndef _CONSTANTS_
+#define _CONSTANTS_
+
+#define DOCUMENT_VIEWER_MAX_COLUMN_COUNT			2
+
+#define DOCUMENT_VIEWER_FIRST_COLUMN_HEADER			"Наименование"
+#define DOCUMENT_VIEWER_SECOND_COLUMN_HEADER		"Вид документа"
+
+#endif //_CONSTANTS_
