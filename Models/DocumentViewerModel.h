@@ -27,11 +27,16 @@ namespace Models
         Q_INVOKABLE Entities::DocumentEntity getCurrentDocEntity() const;
 
         Q_INVOKABLE void openDocumentEditor();
-        Q_INVOKABLE void closeDocumentEditor(const QString& docName, const QString& docType, const QString& docCreationTime);
+        Q_INVOKABLE void closeDocumentEditor(const QString& docName, const QString& docType,
+									const QString& docCreationTime, bool isEditorMode = false);
 
         Q_INVOKABLE void deleteCurrentRecord();
         Q_INVOKABLE bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
     private:
+        void addNewDocument(const Entities::DocumentEntity& value);
+        void addNewDocument(const Entities::DocumentEntity& value, int from, int to);
+        void editDocument(const Entities::DocumentEntity& value);
+
         enum ETableRoles
         {
 	        TableDataRole = Qt::UserRole + 1,

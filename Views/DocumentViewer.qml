@@ -159,9 +159,14 @@ ApplicationWindow {
 
         onOpened: {
             textInput.text = docEditorModel.getCurrentName();
+            comboBox.currentIndex = comboBox.indexOfValue(docEditorModel.getCurrentType());
         }
         onAccepted: {
-            docViewerModel.closeDocumentEditor(textInput.text, comboBox.currentText , dateInput.text)
+            docViewerModel.closeDocumentEditor(textInput.text, comboBox.currentText,
+                                        dateInput.text, docEditorModel.getMode())
+        }
+        onClosed: {
+            docEditorModel.resetState()
         }
 
         Text {

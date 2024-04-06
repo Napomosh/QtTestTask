@@ -54,13 +54,14 @@ namespace Models
 		view.show();
 	}
 
-	void DocumentViewerModel::closeDocumentEditor(const QString& docName, const QString& docType, const QString& docCreationTime)
+	void DocumentViewerModel::closeDocumentEditor(const QString& docName, const QString& docType,
+									const QString& docCreationTime, bool isEditorMode /*=false*/)
 	{
-		Entities::DocumentEntity newDoc (docName.toStdString(), docType.toStdString());
-		beginInsertRows(QModelIndex(), rowCount(), rowCount());
-		m_docs.append(newDoc);
-		insertRow(rowCount());
-		endInsertRows();
+		Entities::DocumentEntity newDoc(docName.toStdString(), docType.toStdString());
+		if (isEditorMode)
+			editDocument(newDoc);
+		else			
+			addNewDocument(newDoc);
 	}
 
 	QStringList DocumentViewerModel::getDocTypes() const
@@ -102,5 +103,25 @@ namespace Models
 		endRemoveRows();
 
 		return true;
+	}
+
+	void DocumentViewerModel::addNewDocument(const Entities::DocumentEntity& value)
+	{
+		m_docs.append(value);
+		addNewDocument(value, rowCount(), rowCount());
+	}
+
+	void DocumentViewerModel::addNewDocument(const Entities::DocumentEntity& value, int from, int to)
+	{
+		beginInsertRows(QModelIndex(), from, to);
+		insertRow(from);
+		endInsertRows();
+	}
+
+	void DocumentViewerModel::editDocument(const Entities::DocumentEntity& value)
+	{
+		auto& curDoc = m_docs[m_currentIndex.row()];
+		curDoc = value;
+		addNewDocument(value, m_currentIndex.row(), m_currentIndex.row());
 	}
 }
