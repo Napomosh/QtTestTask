@@ -1,6 +1,7 @@
 ﻿import QtQuick
 import QtQuick.Controls
 import Qt.labs.qmlmodels
+import QtQuick.Dialogs
 
 ApplicationWindow {
     visible: true
@@ -20,6 +21,9 @@ ApplicationWindow {
             leftMargin: 8
             topMargin: 8
         }
+        onClicked:{
+            dialog.open()
+        }
     }
     
     Button {
@@ -32,6 +36,10 @@ ApplicationWindow {
             top: parent.top
             leftMargin: 120
             topMargin: 8
+        }
+        onClicked:{
+            docEditorModel.receiveDialogParams(docViewerModel.getCurrentDocEntity())
+            dialog.open()
         }
     }
     
@@ -124,6 +132,94 @@ ApplicationWindow {
             Text {
                 text: TableDataRole
             }
+        }
+    }
+
+    Dialog {
+        id: dialog
+        objectName: "dialog"
+        width: 320
+        height: 300
+        visible: false
+        modal: true
+        closePolicy: Popup.NoAutoClose
+
+        property bool isEditMode: false
+
+        Connections{
+            target: docEditorModel
+        }
+
+        anchors{
+             centerIn: parent
+        }
+
+        title: "Создание документа"
+        standardButtons: Dialog.Save | Dialog.Cancel
+
+        onOpened: {
+            textInput.text = docEditorModel.getCurrentName();
+        }
+        onAccepted: {
+            docViewerModel.closeDocumentEditor(textInput.text, comboBox.currentText , dateInput.text)
+        }
+
+        Text {
+            x: 8
+            y: 8
+            width: 276
+            height: 33
+            text: qsTr("Наименование:")
+            font.pixelSize: 20
+        }
+    
+        TextField {
+            id: textInput
+            x: 8
+            y: 47
+            width: 188
+            height: 19
+            placeholderText: "Введите наименование"
+            font.pixelSize: 12
+        }
+    
+        Text {
+            x: 8
+            y: 84
+            width: 276
+            height: 33
+            text: qsTr("Вид документа:")
+            font.pixelSize: 20
+        }
+    
+        ComboBox {
+            id: comboBox
+            x: 12
+            y: 123
+            width: 188
+            height: 35
+
+            model: docViewerModel.getDocTypes()
+        }
+
+        Text {
+            x: 8
+            y: 170
+            width: 276
+            height: 33
+            text: qsTr("Дата создания:")
+            font.pixelSize: 20
+        }
+    
+        TextField {
+            id: dateInput
+            x: 8
+            y: 205
+            width: 188
+            height: 19
+            inputMask: "99.99.9999 dd:dd"
+            text: ""
+            font.pixelSize: 12
         }
     }
 }

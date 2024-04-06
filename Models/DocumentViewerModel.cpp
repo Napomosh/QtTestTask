@@ -1,4 +1,7 @@
 ﻿#include "DocumentViewerModel.h"
+
+#include <QQuickView>
+
 #include "constants.h"
 
 namespace Models
@@ -9,6 +12,7 @@ namespace Models
 		m_roles[TableDataRole] = "TableDataRole";
 		m_roles[HeaderRole] = "HeaderRole";
 
+		m_listDocTypes = { "Основной", "Тестовый" };
 		m_docs.append(Entities::DocumentEntity{"Документ 1", "Обычный"});
 		m_docs.append(Entities::DocumentEntity{"Документ 2",  "Вид документа"});
 	}
@@ -29,8 +33,6 @@ namespace Models
 		return index.column() % 2 == 0
 		? QString(doc.GetName().c_str())
 		: QString(doc.GetType().c_str());
-
-		
 	}
 
 	QHash<int, QByteArray> DocumentViewerModel::roleNames() const
@@ -43,6 +45,32 @@ namespace Models
 		if (value.isEmpty())
 			return;
 		m_currentIndex = value.first();
+	}
+
+	void DocumentViewerModel::openDocumentEditor()
+	{
+		QQuickView view;
+		view.setSource(QUrl::fromLocalFile("../QtTestTask/Views/DocumentEditor.qml"));
+		view.show();
+	}
+
+	void DocumentViewerModel::closeDocumentEditor(const QString& docName, const QString& docType, const QString& docCreationTime)
+	{
+		Entities::DocumentEntity newDoc (docName.toStdString(), docType.toStdString());
+		beginInsertRows(QModelIndex(), rowCount(), rowCount());
+		m_docs.append(newDoc);
+		insertRow(rowCount());
+		endInsertRows();
+	}
+
+	QStringList DocumentViewerModel::getDocTypes() const
+	{
+		return m_listDocTypes;
+	}
+
+	Entities::DocumentEntity DocumentViewerModel::getCurrentDocEntity() const
+	{
+		return m_docs.at(m_currentIndex.row());
 	}
 
 	void DocumentViewerModel::deleteCurrentRecord() {

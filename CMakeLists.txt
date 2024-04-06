@@ -18,7 +18,7 @@ include_directories(Models)
 include_directories(Entities/include)
 
 add_executable(${PROJECT_NAME}
-        main.cpp
+    main.cpp
 )
 add_subdirectory(Entities)
 add_subdirectory(Models)
