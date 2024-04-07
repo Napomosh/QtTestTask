@@ -16,6 +16,7 @@ namespace Models {
 
 		Q_INVOKABLE QString getCurrentName() const;
 		Q_INVOKABLE QString getCurrentType() const;
+		Q_INVOKABLE QString getCurrentTimeCreated() const;
 		Q_INVOKABLE bool getMode() const;
 
 		// нужно чтобы сбросить установленные параметры перед закрытием окна
@@ -23,7 +24,8 @@ namespace Models {
 	private:
 		QString m_curDocName;
 		QString m_curDocType;
-		bool m_isEditorMode = false;
+		QString m_curTimeCreated;
+		bool	m_isEditorMode = false;
 	};
 }
 

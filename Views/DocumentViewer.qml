@@ -1,17 +1,16 @@
 ﻿import QtQuick
 import QtQuick.Controls
-import Qt.labs.qmlmodels
 import QtQuick.Dialogs
 
 ApplicationWindow {
     visible: true
     id: window
-    width: 1024
-    height: 768
+    width: 500
+    height: 500
     
     
     Button {
-        id: createButtonId
+        id: createButton
         width: 91
         height: 34
         text: qsTr("Добавить")
@@ -27,10 +26,11 @@ ApplicationWindow {
     }
     
     Button {
-        id: editButtonId
+        id: editButton
         width: 91
         height: 34
         text: qsTr("Редактировать")
+        enabled: false
         anchors{
             left: parent.left
             top: parent.top
@@ -44,10 +44,11 @@ ApplicationWindow {
     }
     
     Button {
-        id: deleteButtonId
+        id: deleteButton
         width: 91
         height: 34
         text: qsTr("Удалить")
+        enabled: false
         anchors{
             left: parent.left
             top: parent.top
@@ -55,19 +56,6 @@ ApplicationWindow {
             topMargin: 8
         }
        onClicked: docViewerModel.deleteCurrentRecord();
-    }
-    
-    Button {
-        id: docTypesButtonId
-        width: 191
-        height: 34
-        text: qsTr("Справочник видов документа ")
-        anchors{
-            left: parent.left
-            top: parent.top
-            leftMargin: 344
-            topMargin: 8
-        }
     }
 
     HorizontalHeaderView {
@@ -82,7 +70,7 @@ ApplicationWindow {
         }
 
         delegate: Rectangle {
-            implicitWidth: 100
+            implicitWidth: 200
             implicitHeight: 20
             border.color: "black"
             Text {
@@ -110,14 +98,18 @@ ApplicationWindow {
        selectionMode: TableView.SingleSelection
 
        selectionModel: ItemSelectionModel {
-            onSelectedIndexesChanged: docViewerModel.setCurrentIndex(selectedIndexes);
+            onSelectedIndexesChanged: {
+                docViewerModel.setCurrentIndex(selectedIndexes)
+                deleteButton.enabled = tableView.model.hasSelected()
+                editButton.enabled = tableView.model.hasSelected()
+            }
         }
 
         delegate: Rectangle {
-            implicitWidth: 100
+            implicitWidth: 200
             implicitHeight: 20
             border.color: "black"
-
+            required property bool selected
             MouseArea {
                     anchors.fill: parent
                     onClicked: { 
@@ -127,7 +119,6 @@ ApplicationWindow {
                     }
             }
 
-            required property bool selected
             color: selected ? "blue" : "lightgray"
             Text {
                 text: TableDataRole
@@ -160,13 +151,15 @@ ApplicationWindow {
         onOpened: {
             textInput.text = docEditorModel.getCurrentName();
             comboBox.currentIndex = comboBox.indexOfValue(docEditorModel.getCurrentType());
+            timeInput.text = docEditorModel.getCurrentTimeCreated();
         }
         onAccepted: {
             docViewerModel.closeDocumentEditor(textInput.text, comboBox.currentText,
-                                        dateInput.text, docEditorModel.getMode())
+                                        timeInput.text, docEditorModel.getMode())
         }
         onClosed: {
             docEditorModel.resetState()
+            tableView.selectionModel.clearSelection()
         }
 
         Text {
@@ -217,7 +210,7 @@ ApplicationWindow {
         }
     
         TextField {
-            id: dateInput
+            id: timeInput
             x: 8
             y: 205
             width: 188

@@ -2,13 +2,15 @@
 
 namespace Entities 
 {
-	DocumentEntity::DocumentEntity(const std::string& name, const std::string& type) :
-		m_name(name), m_type(type)
+	DocumentEntity::DocumentEntity(const std::string& name, const std::string& type, 
+								const std::string& dateCreated) :
+		m_name(name), m_type(type), m_dateCreated(dateCreated)
 	{
 	}
 
-	DocumentEntity::DocumentEntity(std::string&& name, std::string&& type) :
-		m_name(std::move(name)), m_type(std::move(type))
+	DocumentEntity::DocumentEntity(std::string&& name, std::string&& type, std::string&& dateCreated) :
+		m_name(std::move(name)), m_type(std::move(type)),
+		m_dateCreated(std::move(dateCreated))
 	{
 	}
 
@@ -30,5 +32,10 @@ namespace Entities
 	void DocumentEntity::SetType(const std::string& value)
 	{
 		m_type = value;
+	}
+
+	std::string DocumentEntity::GetTimeCreated() const
+	{
+		return m_dateCreated;
 	}
 }

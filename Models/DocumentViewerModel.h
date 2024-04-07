@@ -25,6 +25,7 @@ namespace Models
 
         Q_INVOKABLE QStringList getDocTypes() const;
         Q_INVOKABLE Entities::DocumentEntity getCurrentDocEntity() const;
+        Q_INVOKABLE bool hasSelected() const;
 
         Q_INVOKABLE void openDocumentEditor();
         Q_INVOKABLE void closeDocumentEditor(const QString& docName, const QString& docType,

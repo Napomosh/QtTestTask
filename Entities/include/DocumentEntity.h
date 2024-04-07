@@ -15,8 +15,8 @@ namespace Entities
 		DocumentEntity(DocumentEntity&& val) = default;
 		~DocumentEntity() = default;
 
-		DocumentEntity(const std::string& name, const std::string& type);
-		DocumentEntity(std::string&& name, std::string&& type);
+		DocumentEntity(const std::string& name, const std::string& type, const std::string& dateCreated);
+		DocumentEntity(std::string&& name, std::string&& type, std::string&& dateCreated);
 
 		std::string GetName() const;
 		void SetName(const std::string& value);
@@ -24,9 +24,12 @@ namespace Entities
 		std::string GetType() const;
 		void SetType(const std::string& value);
 
+		std::string GetTimeCreated() const;
+
 	private:
 		std::string m_name;
 		std::string m_type;
+		std::string m_dateCreated;
 	};
 }
 
