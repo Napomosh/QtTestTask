@@ -14,6 +14,11 @@ namespace Entities
 	{
 	}
 
+	bool DocumentEntity::isValid() const
+	{
+		return !m_name.empty() && !m_type.empty();
+	}
+
 	std::string DocumentEntity::GetName() const
 	{
 		return m_name;

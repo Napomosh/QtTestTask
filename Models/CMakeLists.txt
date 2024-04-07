@@ -9,7 +9,7 @@ find_package(Qt6Quick REQUIRED)
 
 add_library(${PROJECT_NAME} OBJECT
     "DocumentViewerModel.cpp"
-    "DocumentEditorModel.h" "DocumentEditorModel.cpp")
+    "DocumentEditorModel.cpp")
 target_link_libraries(${PROJECT_NAME} PUBLIC
         Qt6::Quick
 )

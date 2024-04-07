@@ -35,7 +35,7 @@ namespace Models
         Q_INVOKABLE bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
     private:
         void addNewDocument(const Entities::DocumentEntity& value);
-        void addNewDocument(const Entities::DocumentEntity& value, int from, int to);
+        void addNewDocument(int from, int to);
         void editDocument(const Entities::DocumentEntity& value);
 
         enum ETableRoles

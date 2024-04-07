@@ -18,6 +18,8 @@ namespace Entities
 		DocumentEntity(const std::string& name, const std::string& type, const std::string& dateCreated);
 		DocumentEntity(std::string&& name, std::string&& type, std::string&& dateCreated);
 
+		bool isValid() const;
+
 		std::string GetName() const;
 		void SetName(const std::string& value);
 
@@ -25,7 +27,6 @@ namespace Entities
 		void SetType(const std::string& value);
 
 		std::string GetTimeCreated() const;
-
 	private:
 		std::string m_name;
 		std::string m_type;

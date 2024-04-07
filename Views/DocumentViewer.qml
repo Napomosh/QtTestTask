@@ -11,7 +11,9 @@ ApplicationWindow {
     minimumWidth: 450
     minimumHeight: 500
 
-    
+    //ScrollBar.vertical: ScrollBar {
+    //        active: true
+    //   }
     
     Button {
         id: createButton
@@ -65,6 +67,8 @@ ApplicationWindow {
     HorizontalHeaderView {
         id: horizontalHeader
         syncView: tableView
+        resizableColumns: false
+        resizableRows: false
 
         anchors{
             top: parent.top
@@ -110,8 +114,10 @@ ApplicationWindow {
         }
 
         delegate: Rectangle {
-            implicitWidth: 200
             implicitHeight: 20
+            // Попытка динамически подгонять ширину под внутренности. TODO Вместо второго числа хорошо бы подставить ширину заголовка
+            implicitWidth: Math.max(textCell.implicitWidth * 1.2, 200)
+
             border.color: "black"
             required property bool selected
             MouseArea {
@@ -125,6 +131,7 @@ ApplicationWindow {
 
             color: selected ? "blue" : "lightgray"
             Text {
+                id: textCell
                 text: TableDataRole
             }
         }
@@ -181,6 +188,7 @@ ApplicationWindow {
             y: 47
             width: 188
             height: 19
+            //maximumLength: 305
             placeholderText: "Введите наименование"
             font.pixelSize: 12
         }

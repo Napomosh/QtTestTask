@@ -58,6 +58,8 @@ namespace Models
 	{
 		Entities::DocumentEntity newDoc(docName.toStdString(), docType.toStdString(),
 						docCreationTime.toStdString());
+		if (!newDoc.isValid())
+			return;
 		if (isEditorMode)
 			editDocument(newDoc);
 		else			
@@ -113,7 +115,7 @@ namespace Models
 	void DocumentViewerModel::addNewDocument(const Entities::DocumentEntity& value)
 	{
 		m_docs.append(value);
-		addNewDocument(value, rowCount(), rowCount());
+		addNewDocument(rowCount(), rowCount());
 	}
 
 	void DocumentViewerModel::editDocument(const Entities::DocumentEntity& value)
@@ -121,11 +123,13 @@ namespace Models
 		if (!m_currentIndex.isValid())
 			return;
 		auto& curDoc = m_docs[m_currentIndex.row()];
-		curDoc = value;
-		addNewDocument(value, m_currentIndex.row(), m_currentIndex.row());
+		curDoc.SetName(value.GetName());
+		curDoc.SetType(value.GetType());
+
+		addNewDocument(m_currentIndex.row(), m_currentIndex.row());
 	}
 
-	void DocumentViewerModel::addNewDocument(const Entities::DocumentEntity& value, int from, int to)
+	void DocumentViewerModel::addNewDocument(int from, int to)
 	{
 		beginInsertRows(QModelIndex(), from, to);
 		insertRow(from);
