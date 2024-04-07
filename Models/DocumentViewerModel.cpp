@@ -1,7 +1,6 @@
-﻿#include "DocumentViewerModel.h"
+﻿#include <QQuickView>
 
-#include <QQuickView>
-
+#include "DocumentViewerModel.h"
 #include "constants.h"
 
 namespace Models
@@ -12,6 +11,7 @@ namespace Models
 		m_roles[TableDataRole] = "TableDataRole";
 		m_roles[HeaderRole] = "HeaderRole";
 
+		// хардкодим типы документов
 		m_listDocTypes = { "Основной", "Тестовый" };
 	}
 
@@ -28,6 +28,7 @@ namespace Models
 		if (role != TableDataRole)
 			return QVariant();
 		const auto& doc = m_docs.at(index.row());
+
 		return index.column() % 2 == 0
 		? QString(doc.GetName().c_str())
 		: QString(doc.GetType().c_str());
@@ -53,13 +54,15 @@ namespace Models
 		view.show();
 	}
 
-	void DocumentViewerModel::closeDocumentEditor(const QString& docName, const QString& docType,
+	void DocumentViewerModel::applyChangesDocumentEditor(const QString& docName, const QString& docType,
 									const QString& docCreationTime, bool isEditorMode /*=false*/)
 	{
 		Entities::DocumentEntity newDoc(docName.toStdString(), docType.toStdString(),
 						docCreationTime.toStdString());
+
 		if (!newDoc.isValid())
 			return;
+
 		if (isEditorMode)
 			editDocument(newDoc);
 		else			
@@ -92,6 +95,7 @@ namespace Models
 	{
 		if (role != HeaderRole)
 			return QVariant();
+
 		switch(section)
 		{
 		case 0:
@@ -112,6 +116,13 @@ namespace Models
 		return true;
 	}
 
+	void DocumentViewerModel::addNewDocument(int from, int to)
+	{
+		beginInsertRows(QModelIndex(), from, to);
+		insertRow(from);
+		endInsertRows();
+	}
+
 	void DocumentViewerModel::addNewDocument(const Entities::DocumentEntity& value)
 	{
 		m_docs.append(value);
@@ -122,17 +133,11 @@ namespace Models
 	{
 		if (!m_currentIndex.isValid())
 			return;
+
 		auto& curDoc = m_docs[m_currentIndex.row()];
 		curDoc.SetName(value.GetName());
 		curDoc.SetType(value.GetType());
 
 		addNewDocument(m_currentIndex.row(), m_currentIndex.row());
-	}
-
-	void DocumentViewerModel::addNewDocument(int from, int to)
-	{
-		beginInsertRows(QModelIndex(), from, to);
-		insertRow(from);
-		endInsertRows();
 	}
 }

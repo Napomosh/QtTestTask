@@ -10,10 +10,6 @@ ApplicationWindow {
 
     minimumWidth: 450
     minimumHeight: 500
-
-    //ScrollBar.vertical: ScrollBar {
-    //        active: true
-    //   }
     
     Button {
         id: createButton
@@ -27,7 +23,7 @@ ApplicationWindow {
             topMargin: 8
         }
         onClicked:{
-            dialog.open()
+            documentEditorDlg.open()
         }
     }
     
@@ -45,7 +41,7 @@ ApplicationWindow {
         }
         onClicked:{
             docEditorModel.receiveDialogParams(docViewerModel.getCurrentDocEntity())
-            dialog.open()
+            documentEditorDlg.open()
         }
     }
     
@@ -119,7 +115,6 @@ ApplicationWindow {
             implicitWidth: Math.max(textCell.implicitWidth * 1.2, 200)
 
             border.color: "black"
-            required property bool selected
             MouseArea {
                     anchors.fill: parent
                     onClicked: { 
@@ -129,6 +124,7 @@ ApplicationWindow {
                     }
             }
 
+            required property bool selected
             color: selected ? "blue" : "lightgray"
             Text {
                 id: textCell
@@ -138,15 +134,15 @@ ApplicationWindow {
     }
 
     Dialog {
-        id: dialog
-        objectName: "dialog"
+        id: documentEditorDlg
+        objectName: "documentEditorDlg"
+        title: "Создание документа"
+        standardButtons: Dialog.Save | Dialog.Cancel
         width: 320
         height: 300
         visible: false
         modal: true
         closePolicy: Popup.NoAutoClose
-
-        property bool isEditMode: false
 
         Connections{
             target: docEditorModel
@@ -156,16 +152,13 @@ ApplicationWindow {
              centerIn: parent
         }
 
-        title: "Создание документа"
-        standardButtons: Dialog.Save | Dialog.Cancel
-
         onOpened: {
             textInput.text = docEditorModel.getCurrentName();
             comboBox.currentIndex = comboBox.indexOfValue(docEditorModel.getCurrentType());
             timeInput.text = docEditorModel.getCurrentTimeCreated();
         }
         onAccepted: {
-            docViewerModel.closeDocumentEditor(textInput.text, comboBox.currentText,
+            docViewerModel.applyChangesDocumentEditor(textInput.text, comboBox.currentText,
                                         timeInput.text, docEditorModel.getMode())
         }
         onClosed: {
@@ -188,7 +181,6 @@ ApplicationWindow {
             y: 47
             width: 188
             height: 19
-            //maximumLength: 305
             placeholderText: "Введите наименование"
             font.pixelSize: 12
         }
@@ -208,7 +200,6 @@ ApplicationWindow {
             y: 123
             width: 188
             height: 35
-
             model: docViewerModel.getDocTypes()
         }
 
@@ -228,7 +219,6 @@ ApplicationWindow {
             width: 188
             height: 19
             inputMask: "99.99.9999 dd:dd"
-            text: ""
             font.pixelSize: 12
         }
     }

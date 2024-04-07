@@ -15,10 +15,7 @@ int main(int argc, char* argv[])
     engine.rootContext()->setContextProperty("docEditorModel", docEditorModel.get());
 
     const QUrl view = QUrl::fromLocalFile("Views/DocumentViewer.qml");
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreated,
-        &app,
+    QObject::connect(&engine,&QQmlApplicationEngine::objectCreated, &app,
         [&view](QObject* obj, const QUrl& objUrl) {
             if (!obj && view == objUrl)
                 QCoreApplication::exit(-1);
