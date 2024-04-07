@@ -5,8 +5,12 @@ import QtQuick.Dialogs
 ApplicationWindow {
     visible: true
     id: window
-    width: 500
+    width: 450
     height: 500
+
+    minimumWidth: 450
+    minimumHeight: 500
+
     
     
     Button {
