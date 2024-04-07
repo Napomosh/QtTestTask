@@ -9,7 +9,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-add_compile_options(/Wall)
+#add_compile_options(/Wall)
 
 find_package(Qt6Quick REQUIRED)
 find_package(Qt6Qml REQUIRED)
