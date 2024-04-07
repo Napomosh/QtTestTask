@@ -47,13 +47,6 @@ namespace Models
 		m_currentIndex = value.first();
 	}
 
-	void DocumentViewerModel::openDocumentEditor()
-	{
-		QQuickView view;
-		view.setSource(QUrl::fromLocalFile("../QtTestTask/Views/DocumentEditor.qml"));
-		view.show();
-	}
-
 	void DocumentViewerModel::applyChangesDocumentEditor(const QString& docName, const QString& docType,
 									const QString& docCreationTime, bool isEditorMode /*=false*/)
 	{

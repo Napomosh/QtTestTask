@@ -28,7 +28,6 @@ namespace Models
         Q_INVOKABLE Entities::DocumentEntity getCurrentDocEntity() const;
         Q_INVOKABLE bool hasSelected() const;
 
-        Q_INVOKABLE void openDocumentEditor();
         Q_INVOKABLE void applyChangesDocumentEditor(const QString& docName, const QString& docType,
 									const QString& docCreationTime, bool isEditorMode = false);
 
